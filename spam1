@@ -1,0 +1,189 @@
+PROGRAM 4
+*****************************templates->layout.html******************************
+<html>
+    <body>
+        <header>
+            <nav>
+                <ul><h13>Choose links</h3>
+                    <li><a href="/home/">home</a></li>
+                    <li><a href="/about/">about</a></li>
+                    <li><a href="/contact/">contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>{% block content %}
+            {% endblock %}
+        </main>
+
+        <footer>
+            <p>&copy:All Rights Reserved</p>
+            <p>Owned by ligma</p>
+        </footer>
+    </body>
+</html>
+
+
+************************************templates->home.html************************
+{% extends 'layout.html' %}
+
+{% block content %}
+<p>This is Home Info</p>
+{% endblock %}
+
+***********************************templates->about.html**********************************
+{% extends 'layout.html' %}
+
+{% block content %}
+<p>This is About Info</p>
+{% endblock %}
+
+**********************************templates->contact.html****************************
+{% extends 'layout.html' %}
+
+{% block content %}
+<p>This is Contact Info</p>
+{% endblock %}
+
+********************************project->urls.py**************************
+from django.contrib import admin 
+from . import views 
+from django.urls import path 
+
+urlpatterns=[
+    path('admin/',admin.site.urls),
+    path('',views.home),
+    path('home/',views.home),
+    path('about/',views.about),
+    path('contact/',views.contact),
+]
+
+*****************************project->views.py******************************
+from django.shortcuts import render 
+
+
+def home(request):
+    return render(request,'home.html')
+
+def contact(request):
+    return render(request,'contact.html')
+
+def about(request):
+    return render(request,'about.html')
+
+********************************project->settings.py***************************
+
+'DIRS': [BASE_DIR,'templates'],
+---------------------------------------------------------------------------------------------------------------------------------
+
+PROGRAM 3
+**************************project->urls.py*********************************
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('homepage/',views.fetch),
+]
+
+***************************project->views.py*******************************
+from django.shortcuts import render 
+
+def fetch(request):
+    return render(request,'homepage.html')
+
+***************************templates->homepage.html*********************
+<html>
+    <body>
+        
+        <h1>ordered list of fruits </h1>
+        <ol>
+            <li><p>Apple</p></li>
+            <li><p>Banana</p></li>
+            <li><p>Orange</p></li>
+            <li><p>Lichi</p></li>
+        </ol>
+
+        <h1>Unordered list of students</h1>
+        <ul>
+            <li><p>Suresh</p></li>
+            <li><p>mahesh</p></li>
+            <li><p>mandy</p></li>
+            <li><p>sandy</p></li>
+        </ul>
+    </body>
+</html>
+
+**********************settings.py****************************
+'DIRS': [BASE_DIR,'templates'],
+-----------------------------------------------------------------------------------------
+
+PROGRAM 2
+***************************secondapp->views.py*****************************
+from datetime import datetime,timedelta
+from django.http import HttpResponse
+
+
+def fetch(request):
+    now=datetime.now()
+    after_4_hrs=now+timedelta(hours=4)
+    before_4_hrs=now-timedelta(hours=4)
+    html=f"<p>Current Date time is {now}</p>"\
+         f"<p>After four hours={after_4_hrs}</p>"\
+         f"<p>Before Four hours={before_4_hrs}</p>"\
+         
+    return HttpResponse(html)
+
+*************************secondapp->urls.py***************************
+from django.urls import path 
+from . import views 
+
+
+urlpatterns=[
+    path('datetimeoffset/',views.fetch),
+]
+
+*************************project->urls.py***********************
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',include('secondapp.urls')),
+]
+
+
+
+--------------------------------------------------------------------------------------------------------------
+PROGRAM1 
+
+*****************************project->urls.py**************************
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',include('firstapp.urls')),
+]
+
+
+***************************firstapp->urls.py**********************
+from django.urls import path 
+from . import views 
+
+
+urlpatterns=[
+    path('datetime/',views.fetch),
+]
+
+***************************firstapp->views.py**********************
+from datetime import datetime,timedelta
+from django.http import HttpResponse
+
+
+def fetch(request):
+    now=datetime.now()
+    return HttpResponse({now})
+------------------------------------------------------------------------------------------
+
